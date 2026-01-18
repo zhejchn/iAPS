@@ -23,14 +23,14 @@ DEVICE_NAME = ENV["DEVICE_NAME"]
 DEVICE_ID = ENV["DEVICE_ID"]
 ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
-APP_IDENTIFIER = ENV.fetch('APP_IDENTIFIER') { "ru.artpancreas.#{TEAMID}.FreeAPS" }
+com.zhejchn.iaps = ENV.fetch('com.zhejchn.iaps') { "ru.artpancreas.#{TEAMID}.FreeAPS" }
 
 if ENV['BUILD_GROUP']
   File.write('../ConfigOverride.xcconfig', "COPYRIGHT_NOTICE = #{ENV['BUILD_GROUP']}\n", mode: 'a')
 end
 
-if #{APP_IDENTIFIER} != "ru.artpancreas.#{TEAMID}.FreeAPS"
-  File.write('../ConfigOverride.xcconfig', "BUNDLE_IDENTIFIER = #{APP_IDENTIFIER}\n", mode: 'a')
+if #{com.zhejchn.iaps} != "ru.artpancreas.#{TEAMID}.FreeAPS"
+  File.write('../ConfigOverride.xcconfig', "BUNDLE_IDENTIFIER = #{com.zhejchn.iaps}\n", mode: 'a')
 end
 
 if File.exist?('../ConfigOverride.xcconfig')
@@ -57,7 +57,7 @@ platform :ios do
     )
 
     previous_build_number = latest_testflight_build_number(
-      app_identifier: "#{APP_IDENTIFIER}",
+      com.zhejchn.iaps: "#{com.zhejchn.iaps}",
       api_key: api_key,
     )
 
@@ -71,16 +71,16 @@ platform :ios do
     match(
       type: "appstore",
       git_basic_authorization: Base64.strict_encode64("#{GITHUB_REPOSITORY_OWNER}:#{GH_PAT}"),
-      app_identifier: [
-        "#{APP_IDENTIFIER}",
-        "#{APP_IDENTIFIER}.watchkitapp",
-        "#{APP_IDENTIFIER}.watchkitapp.watchkitextension",
-        "#{APP_IDENTIFIER}.LiveActivity"
+      com.zhejchn.iaps: [
+        "#{com.zhejchn.iaps}",
+        "#{com.zhejchn.iaps}.watchkitapp",
+        "#{com.zhejchn.iaps}.watchkitapp.watchkitextension",
+        "#{com.zhejchn.iaps}.LiveActivity"
       ]
     )
 
     previous_build_number = latest_testflight_build_number(
-      app_identifier: "#{APP_IDENTIFIER}",
+      com.zhejchn.iaps: "#{com.zhejchn.iaps}",
       api_key: api_key,
     )
 
@@ -97,27 +97,27 @@ platform :ios do
 
     update_code_signing_settings(
       path: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
-      profile_name: mapping["#{APP_IDENTIFIER}"],
+      profile_name: mapping["#{com.zhejchn.iaps}"],
       code_sign_identity: "iPhone Distribution",
       targets: ["FreeAPS"]
     )
 
     update_code_signing_settings(
       path: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
-      profile_name: mapping["#{APP_IDENTIFIER}.watchkitapp.watchkitextension"],
+      profile_name: mapping["#{com.zhejchn.iaps}.watchkitapp.watchkitextension"],
       code_sign_identity: "iPhone Distribution",
       targets: ["FreeAPSWatch WatchKit Extension"]
     )
     
     update_code_signing_settings(
       path: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
-      profile_name: mapping["#{APP_IDENTIFIER}.watchkitapp"],
+      profile_name: mapping["#{com.zhejchn.iaps}.watchkitapp"],
       code_sign_identity: "iPhone Distribution",
       targets: ["FreeAPSWatch"]
     )
     update_code_signing_settings(
       path: "#{GITHUB_WORKSPACE}/FreeAPS.xcodeproj",
-      profile_name: mapping["#{APP_IDENTIFIER}.LiveActivity"],
+      profile_name: mapping["#{com.zhejchn.iaps}.LiveActivity"],
       code_sign_identity: "iPhone Distribution",
       targets: ["LiveActivityExtension"]
     )
@@ -177,22 +177,22 @@ platform :ios do
       end
     end
 
-    configure_bundle_id("FreeAPS", "#{APP_IDENTIFIER}", [
+    configure_bundle_id("FreeAPS", "#{com.zhejchn.iaps}", [
       Spaceship::ConnectAPI::BundleIdCapability::Type::APP_GROUPS,
       Spaceship::ConnectAPI::BundleIdCapability::Type::HEALTHKIT,
       Spaceship::ConnectAPI::BundleIdCapability::Type::NFC_TAG_READING
     ])
 
-    configure_bundle_id("FreeAPSWatch WatchKit Extension", "#{APP_IDENTIFIER}.watchkitapp.watchkitextension", [
+    configure_bundle_id("FreeAPSWatch WatchKit Extension", "#{com.zhejchn.iaps}.watchkitapp.watchkitextension", [
       Spaceship::ConnectAPI::BundleIdCapability::Type::APP_GROUPS,
       Spaceship::ConnectAPI::BundleIdCapability::Type::HEALTHKIT
     ])
     
-    configure_bundle_id("FreeAPSWatch", "#{APP_IDENTIFIER}.watchkitapp", [
+    configure_bundle_id("FreeAPSWatch", "#{com.zhejchn.iaps}.watchkitapp", [
       Spaceship::ConnectAPI::BundleIdCapability::Type::APP_GROUPS
     ])
 
-    configure_bundle_id("LiveActivityExtension", "#{APP_IDENTIFIER}.LiveActivity", [
+    configure_bundle_id("LiveActivityExtension", "#{com.zhejchn.iaps}.LiveActivity", [
       Spaceship::ConnectAPI::BundleIdCapability::Type::APP_GROUPS
     ])
     
@@ -214,11 +214,11 @@ platform :ios do
       force: false,
       verbose: true,
       git_basic_authorization: Base64.strict_encode64("#{GITHUB_REPOSITORY_OWNER}:#{GH_PAT}"),
-      app_identifier: [
-        "#{APP_IDENTIFIER}",
-        "#{APP_IDENTIFIER}.watchkitapp.watchkitextension",
-        "#{APP_IDENTIFIER}.watchkitapp",
-        "#{APP_IDENTIFIER}.LiveActivity"
+      com.zhejchn.iaps: [
+        "#{com.zhejchn.iaps}",
+        "#{com.zhejchn.iaps}.watchkitapp.watchkitextension",
+        "#{com.zhejchn.iaps}.watchkitapp",
+        "#{com.zhejchn.iaps}.LiveActivity"
       ]
     )
   end
@@ -238,12 +238,12 @@ platform :ios do
       bundle_id = Spaceship::ConnectAPI::BundleId.find(identifier)
     end
 
-    find_bundle_id("#{APP_IDENTIFIER}")
+    find_bundle_id("#{com.zhejchn.iaps}")
 
     match(
       type: "appstore",
       git_basic_authorization: Base64.strict_encode64("#{GITHUB_REPOSITORY_OWNER}:#{GH_PAT}"),
-      app_identifier: [],
+      com.zhejchn.iaps: [],
     )
   end
 
